@@ -33,14 +33,64 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         newsAdapter = NewsAdapter()
+        val newsService = retrofit.create(NewsService::class.java)
 
         binding.newsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
         }
 
-        val newsService = retrofit.create(NewsService::class.java)
-        newsService.mainFeed().enqueue(object : Callback<NewsRss> {
+        binding.feedChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.feedChip.isChecked = true
+
+            newsService.mainFeed().submitList()
+        }
+
+        binding.politicsChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.politicsChip.isChecked = true
+
+            newsService.politicsNews().submitList()
+        }
+
+        binding.economyChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.economyChip.isChecked = true
+
+            newsService.economyNews().submitList()
+            // todo API 호출 리스트 변경
+        }
+
+        binding.socieryChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.socieryChip.isChecked = true
+
+            newsService.societyNews().submitList()
+            // todo API 호출 리스트 변경
+        }
+
+        binding.itChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.itChip.isChecked = true
+
+            newsService.itNews().submitList()
+            // todo API 호출 리스트 변경
+        }
+
+        binding.sportsChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.sportsChip.isChecked = true
+
+            newsService.sportsNews().submitList()
+
+        }
+
+        newsService.mainFeed().submitList()
+    }
+
+    private fun Call<NewsRss>.submitList() {
+        enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
                 Log.e("MainActivity", "${response.body()?.channel?.items}")
 
