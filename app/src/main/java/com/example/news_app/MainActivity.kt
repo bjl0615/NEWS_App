@@ -1,7 +1,10 @@
 package com.example.news_app
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_app.databinding.ActivityMainBinding
@@ -59,7 +62,6 @@ class MainActivity : AppCompatActivity() {
             binding.economyChip.isChecked = true
 
             newsService.economyNews().submitList()
-            // todo API 호출 리스트 변경
         }
 
         binding.socieryChip.setOnClickListener {
@@ -67,7 +69,6 @@ class MainActivity : AppCompatActivity() {
             binding.socieryChip.isChecked = true
 
             newsService.societyNews().submitList()
-            // todo API 호출 리스트 변경
         }
 
         binding.itChip.setOnClickListener {
@@ -75,7 +76,6 @@ class MainActivity : AppCompatActivity() {
             binding.itChip.isChecked = true
 
             newsService.itNews().submitList()
-            // todo API 호출 리스트 변경
         }
 
         binding.sportsChip.setOnClickListener {
@@ -86,6 +86,20 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        binding.searchTextInputEditText.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.chipGroup.clearCheck()
+
+                binding.searchTextInputEditText.clearFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken , 0)
+
+                newsService.search(binding.searchTextInputEditText.text.toString()).submitList()
+
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
         newsService.mainFeed().submitList()
     }
 
