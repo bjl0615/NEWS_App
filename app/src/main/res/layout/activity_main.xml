@@ -101,4 +101,17 @@
         app:layout_constraintTop_toBottomOf="@id/textInputLayout"
         tools:listitem="@layout/item_news" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/notFoundView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_rawRes="@raw/not_found"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        android:layout_height="0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
